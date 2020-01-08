@@ -99,4 +99,15 @@ public class OrderRepository {
     }
 
 
+    public List<Order> findAllWithItem() {
+        return em.createQuery(
+                "select distinct o from Order o" +
+                        " join fetch o.member m" +
+                        " join fetch o.delivery d" +
+                        " join fetch o.orderItems oi" +  // order 2개 orderitem 4개라 order 가 4개가 되어버림
+                        " join fetch  oi.item i", Order.class)
+                .setFirstResult(1)
+                .setMaxResults(10)
+                .getResultList();
+    }
 }
